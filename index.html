@@ -288,6 +288,44 @@
         let fontSize = 8; // Начальный размер шрифта в em
         const defaultFontSize = 8; // Сохраняем начальное значение
 
+        // Функция сохранения настроек
+        function saveSettings() {
+            const settings = {
+                fontSize: fontSize,
+                font: document.documentElement.style.getPropertyValue('--main-font'),
+                dateVisible: document.getElementById('dateToggle').checked,
+                weatherVisible: document.getElementById('weatherToggle').checked
+            };
+            localStorage.setItem('clockSettings', JSON.stringify(settings));
+        }
+
+        // Функция загрузки настроек
+        function loadSettings() {
+            const settings = localStorage.getItem('clockSettings');
+            if (settings) {
+                const parsedSettings = JSON.parse(settings);
+                
+                // Восстанавливаем размер шрифта
+                fontSize = parsedSettings.fontSize || defaultFontSize;
+                document.getElementById('clock').style.fontSize = fontSize + 'em';
+                
+                // Восстанавливаем шрифт
+                if (parsedSettings.font) {
+                    document.documentElement.style.setProperty('--main-font', parsedSettings.font);
+                }
+                
+                // Восстанавливаем видимость даты
+                document.getElementById('dateToggle').checked = parsedSettings.dateVisible;
+                toggleDate();
+                
+                // Восстанавливаем видимость погоды
+                document.getElementById('weatherToggle').checked = parsedSettings.weatherVisible;
+                if (parsedSettings.weatherVisible) {
+                    toggleWeather();
+                }
+            }
+        }
+
         function toggleFontList() {
             document.getElementById('fontList').classList.toggle('show');
         }
@@ -295,6 +333,7 @@
         function changeFont(fontFamily) {
             document.documentElement.style.setProperty('--main-font', fontFamily);
             toggleFontList();
+            saveSettings();
         }
 
         // Закрываем список шрифтов при клике вне его
@@ -319,6 +358,7 @@
         function resetSize() {
             fontSize = defaultFontSize;
             document.getElementById('clock').style.fontSize = fontSize + 'em';
+            saveSettings();
         }
 
         function changeSize(delta) {
@@ -327,6 +367,7 @@
             if (fontSize < 1) fontSize = 1;
             if (fontSize > 20) fontSize = 20;
             document.getElementById('clock').style.fontSize = fontSize + 'em';
+            saveSettings();
         }
 
         function updateTime() {
@@ -362,6 +403,7 @@
             const dateDiv = document.getElementById('date');
             const isChecked = document.getElementById('dateToggle').checked;
             dateDiv.style.display = isChecked ? 'block' : 'none';
+            saveSettings();
         }
 
         // Инициализация состояния даты (скрыта по умолчанию)
@@ -429,12 +471,16 @@
             } else {
                 weatherDiv.style.display = 'none';
             }
+            saveSettings();
         }
 
         // Обновляем время каждую секунду
         setInterval(updateTime, 1000);
         // Вызываем сразу, чтобы не ждать первую секунду
         updateTime();
+
+        // Загружаем настройки при запуске
+        loadSettings();
     </script>
 </body>
 </html>
