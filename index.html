@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Текущее время</title>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #222222;
+            font-family: Arial, sans-serif;
+        }
+
+        #clock {
+            font-size: 8em;
+            color: #FFFAFA;
+        }
+
+        #size-controls, #font-control, #fullscreen-control {
+            opacity: 0;
+            transition: opacity 0.3s;
+            padding: 20px;
+            margin: -20px;
+        }
+
+        #size-controls:hover, #font-control:hover, #fullscreen-control:hover {
+            opacity: 1;
+        }
+
+        #size-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        #font-control {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        #fullscreen-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .size-btn {
+            background-color: #FFFAFA;
+            color: #222222;
+            border: none;
+            padding: 0;
+            margin: 0 5px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            width: 45px;
+            height: 45px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+        }
+
+        .fullscreen-btn {
+            width: auto;
+            padding: 0 20px;
+        }
+
+        .size-btn i {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .size-btn:hover {
+            background-color: #FFFAFA;
+        }
+
+        .font-list {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background-color: #FFFAFA;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .font-list.show {
+            display: block;
+        }
+
+        .font-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .font-item:hover {
+            background-color: #FFFAFA;
+        }
+    </style>
+</head>
+<body>
+    <div id="size-controls">
+        <button class="size-btn" onclick="changeSize(2)">+</button>
+        <button class="size-btn" onclick="changeSize(-2)">-</button>
+        <button class="size-btn" onclick="resetSize()"><i class="fi fi-br-rotate-left"></i></button>
+    </div>
+    <div id="font-control">
+        <button class="size-btn fullscreen-btn" onclick="toggleFontList()">Font</button>
+        <div class="font-list" id="fontList">
+            <div class="font-item" onclick="changeFont('Arial')">Arial</div>
+            <div class="font-item" onclick="changeFont('Times New Roman')">Times New Roman</div>
+            <div class="font-item" onclick="changeFont('Courier New')">Courier New</div>
+            <div class="font-item" onclick="changeFont('Georgia')">Georgia</div>
+            <div class="font-item" onclick="changeFont('Verdana')">Verdana</div>
+            <div class="font-item" onclick="changeFont('Comic Sans MS')">Comic Sans MS</div>
+        </div>
+    </div>
+    <div id="fullscreen-control">
+        <button class="size-btn fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
+    </div>
+    <div id="clock"></div>
+
+    <script>
+        let fontSize = 8; // Начальный размер шрифта в em
+        const defaultFontSize = 8; // Сохраняем начальное значение
+
+        function toggleFontList() {
+            document.getElementById('fontList').classList.toggle('show');
+        }
+
+        function changeFont(fontFamily) {
+            document.getElementById('clock').style.fontFamily = fontFamily;
+            toggleFontList(); // Скрываем список после выбора
+        }
+
+        // Закрываем список шрифтов при клике вне его
+        document.addEventListener('click', function(event) {
+            const fontControl = document.getElementById('font-control');
+            const fontList = document.getElementById('fontList');
+            if (!fontControl.contains(event.target) && fontList.classList.contains('show')) {
+                fontList.classList.remove('show');
+            }
+        });
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        function resetSize() {
+            fontSize = defaultFontSize;
+            document.getElementById('clock').style.fontSize = fontSize + 'em';
+        }
+
+        function changeSize(delta) {
+            fontSize += delta;
+            // Ограничиваем минимальный и максимальный размер
+            if (fontSize < 1) fontSize = 1;
+            if (fontSize > 20) fontSize = 20;
+            document.getElementById('clock').style.fontSize = fontSize + 'em';
+        }
+
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('clock').textContent = 
+                `${hours}:${minutes}:${seconds}`;
+        }
+
+        // Обновляем время каждую секунду
+        setInterval(updateTime, 1000);
+        // Вызываем сразу, чтобы не ждать первую секунду
+        updateTime();
+    </script>
+</body>
+</html>
