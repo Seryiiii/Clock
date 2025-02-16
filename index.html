@@ -119,7 +119,30 @@
             padding: 10px 20px;
             cursor: pointer;
             white-space: nowrap;
-            font-family: var(--main-font);
+        }
+
+        .font-item[data-font="Arial"] {
+            font-family: Arial;
+        }
+
+        .font-item[data-font="Times New Roman"] {
+            font-family: "Times New Roman";
+        }
+
+        .font-item[data-font="Courier New"] {
+            font-family: "Courier New";
+        }
+
+        .font-item[data-font="Georgia"] {
+            font-family: Georgia;
+        }
+
+        .font-item[data-font="Verdana"] {
+            font-family: Verdana;
+        }
+
+        .font-item[data-font="Comic Sans MS"] {
+            font-family: "Comic Sans MS";
         }
 
         .font-item:hover {
@@ -246,12 +269,12 @@
     <div id="font-control">
         <button class="size-btn fullscreen-btn" onclick="toggleFontList()">Font</button>
         <div class="font-list" id="fontList">
-            <div class="font-item" onclick="changeFont('Arial')">Arial</div>
-            <div class="font-item" onclick="changeFont('Times New Roman')">Times New Roman</div>
-            <div class="font-item" onclick="changeFont('Courier New')">Courier New</div>
-            <div class="font-item" onclick="changeFont('Georgia')">Georgia</div>
-            <div class="font-item" onclick="changeFont('Verdana')">Verdana</div>
-            <div class="font-item" onclick="changeFont('Comic Sans MS')">Comic Sans MS</div>
+            <div class="font-item" data-font="Arial" onclick="changeFont('Arial')">Arial</div>
+            <div class="font-item" data-font="Times New Roman" onclick="changeFont('Times New Roman')">Times New Roman</div>
+            <div class="font-item" data-font="Courier New" onclick="changeFont('Courier New')">Courier New</div>
+            <div class="font-item" data-font="Georgia" onclick="changeFont('Georgia')">Georgia</div>
+            <div class="font-item" data-font="Verdana" onclick="changeFont('Verdana')">Verdana</div>
+            <div class="font-item" data-font="Comic Sans MS" onclick="changeFont('Comic Sans MS')">Comic Sans MS</div>
         </div>
     </div>
     <div id="fullscreen-control">
