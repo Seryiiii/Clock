@@ -6,6 +6,10 @@
     <title>Текущее время</title>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
     <style>
+        :root {
+            --main-font: Arial, sans-serif;
+        }
+        
         body {
             margin: 0;
             height: 100vh;
@@ -14,11 +18,18 @@
             justify-content: center;
             align-items: center;
             background-color: #222222;
-            font-family: Arial, sans-serif;
+            font-family: var(--main-font);
         }
 
         #clock {
             font-size: 8em;
+            color: #FFFAFA;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #date {
+            font-size: 2em;
             color: #FFFAFA;
             text-align: center;
             margin-bottom: 20px;
@@ -70,6 +81,7 @@
             justify-content: center;
             align-items: center;
             line-height: 1;
+            font-family: var(--main-font);
         }
 
         .fullscreen-btn {
@@ -107,6 +119,7 @@
             padding: 10px 20px;
             cursor: pointer;
             white-space: nowrap;
+            font-family: var(--main-font);
         }
 
         .font-item:hover {
@@ -210,6 +223,13 @@
         <button class="size-btn" onclick="toggleMenuList()"><i class="fi fi-br-menu-burger"></i></button>
         <div class="menu-list" id="menuList">
             <div class="menu-item">
+                Дата
+                <label class="toggle-switch">
+                    <input type="checkbox" id="dateToggle" onchange="toggleDate()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="menu-item">
                 Погода
                 <label class="toggle-switch">
                     <input type="checkbox" id="weatherToggle" onchange="toggleWeather()">
@@ -237,6 +257,7 @@
     <div id="fullscreen-control">
         <button class="size-btn fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
     </div>
+    <div id="date"></div>
     <div id="clock"></div>
     <div id="weather"></div>
 
@@ -249,8 +270,8 @@
         }
 
         function changeFont(fontFamily) {
-            document.getElementById('clock').style.fontFamily = fontFamily;
-            toggleFontList(); // Скрываем список после выбора
+            document.documentElement.style.setProperty('--main-font', fontFamily);
+            toggleFontList();
         }
 
         // Закрываем список шрифтов при клике вне его
@@ -291,8 +312,14 @@
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
             
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            
             document.getElementById('clock').textContent = 
                 `${hours}:${minutes}:${seconds}`;
+            document.getElementById('date').textContent = 
+                `${day}.${month}.${year}`;
         }
 
         function toggleMenuList() {
@@ -307,6 +334,15 @@
                 menuList.classList.remove('show');
             }
         });
+
+        function toggleDate() {
+            const dateDiv = document.getElementById('date');
+            const isChecked = document.getElementById('dateToggle').checked;
+            dateDiv.style.display = isChecked ? 'block' : 'none';
+        }
+
+        // Инициализация состояния даты (скрыта по умолчанию)
+        document.getElementById('date').style.display = 'none';
 
         async function getWeather(latitude, longitude) {
             try {
