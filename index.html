@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Текущее время</title>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --main-font: Arial, sans-serif;
@@ -145,6 +146,10 @@
             font-family: "Comic Sans MS";
         }
 
+        .font-item[data-font="Syncopate"] {
+            font-family: "Syncopate";
+        }
+
         .font-item:hover {
             background-color: #FFFAFA;
         }
@@ -246,14 +251,14 @@
         <button class="size-btn" onclick="toggleMenuList()"><i class="fi fi-br-menu-burger"></i></button>
         <div class="menu-list" id="menuList">
             <div class="menu-item">
-                Дата
+                Date
                 <label class="toggle-switch">
                     <input type="checkbox" id="dateToggle" onchange="toggleDate()">
                     <span class="slider"></span>
                 </label>
             </div>
             <div class="menu-item">
-                Погода
+                Weather
                 <label class="toggle-switch">
                     <input type="checkbox" id="weatherToggle" onchange="toggleWeather()">
                     <span class="slider"></span>
@@ -275,6 +280,7 @@
             <div class="font-item" data-font="Georgia" onclick="changeFont('Georgia')">Georgia</div>
             <div class="font-item" data-font="Verdana" onclick="changeFont('Verdana')">Verdana</div>
             <div class="font-item" data-font="Comic Sans MS" onclick="changeFont('Comic Sans MS')">Comic Sans MS</div>
+            <div class="font-item" data-font="Syncopate" onclick="changeFont('Syncopate')">Syncopate</div>
         </div>
     </div>
     <div id="fullscreen-control">
